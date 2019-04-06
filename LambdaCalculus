@@ -18,3 +18,12 @@ pretty = f 0
       f i (Variable x) = x
       f i (Lambda x m) = if i /= 0 then "(" ++ s ++ ")" else s where s = "\\" ++ x ++ ". " ++ f 0 m 
       f i (Apply  n m) = if i == 2 then "(" ++ s ++ ")" else s where s = f 1 n ++ " " ++ f 2 m
+      
+-------------------------------------
+--Part 1: Church numeral calculator--
+-------------------------------------
+numeral :: Int -> Term
+numeral i = Lambda "f" (Lambda "x" (numeralChurch (i)))
+    where
+        numeralChurch 0 = Variable "x"
+        numeralChurch i = Apply (Variable "f") (numeralChurch(i-1))
