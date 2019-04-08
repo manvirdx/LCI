@@ -56,3 +56,21 @@ used :: Term -> [Var]
 used (Variable v) = [v]
 used (Lambda x term) = merge [x] (used term)
 used (Apply term1 term2) = merge (used term1) (used term2)
+
+-------------------------------------
+-------Part 6: Rename variable-------
+-------------------------------------
+rename :: Var -> Var -> Term -> Term
+rename x y (Variable z) = if x == z then (Variable y) else (Variable z)
+rename x y (Lambda z n) = if x == z then (Lambda z n) else (Lambda z (rename x y n))
+rename x y (Apply  n m) = Apply (rename x y n) (rename x y m)
+
+-------------------------------------
+---------Part 7: Substitution--------
+-------------------------------------
+substitute :: Var -> Term -> Term -> Term
+substitute x f (Variable v) = if x == v then f else (Variable v) 
+substitute x f (Apply  n m) = Apply (substitute x f n) (substitute x f m)
+substitute x f (Lambda z n) = if x == z then (Lambda z n) 
+                              else (Lambda ld (substitute x f (rename z (ld) n))) 
+                              where ld = fresh(merge [x] (merge (used f) (used n)))
