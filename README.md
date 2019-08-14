@@ -1,3 +1,3 @@
 # LCI
 Lambda calculus interpreter, developed using Haskell.
-2019.
+2019. 
